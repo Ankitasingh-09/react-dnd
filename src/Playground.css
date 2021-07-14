@@ -64,18 +64,26 @@
 .canvasStyle {
   display: flex;
   position: relative;
-  width: 100%;
+  width: 70%;
   height: 100%;
   background: white;
   color: black;
 }
 
-/*.canvasContainerStyle {*/
-/*  position: relative;*/
-/*  background: white;*/
-/*  color: black;*/
-/*  width: var(--canvasWidthVw);*/
-/*}*/
+.scriptContainer {
+  width: 30%;
+  height: 100%;
+  position: relative;
+  background: white;
+  color: black;
+  border: 1px solid #000;
+  padding: 0.5em 2em;
+}
+
+.scriptContainer pre {
+  text-align: left;
+  white-space: pre-wrap;
+}
 
 .toolboxMenu {
   width: 20%;
