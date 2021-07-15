@@ -1,4 +1,6 @@
-const awsValidation = (start, end) => {
+const awsValidation = (startPoint, endPoint) => {
+    const start = startPoint.split("_")[0];
+    const end = endPoint.split("_")[0];
     switch (start) {
         case 'S3':
             if (end === 'users') return false;
