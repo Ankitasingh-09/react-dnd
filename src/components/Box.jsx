@@ -4,12 +4,17 @@ import validateConnection from "../ruleEngine";
 import { Rnd } from "react-rnd";
 
 const Box = props => {
-  const [config,setConfig]=useState({width:'200',height:'200',x:props.box.x,y:props.box.y})
+  const [config, setConfig] = useState({
+    width: "200",
+    height: "200"
+  });
 
   const handleDrag = (e, d) => {
-    
-    setConfig({ x: d.x, y: d.y });
-     props.setBoxes([...props.boxes]);
+    props.setBoxes(boxes => {
+      return boxes.map(box =>
+        box.id === props.box.id ? { ...box, x: d.x, y: d.y } : box
+      );
+    });
   };
 
   const handleClick = e => {
@@ -20,16 +25,18 @@ const Box = props => {
       props.actionState === "Add Connections" &&
       props.selected.id !== props.box.id
     ) {
-      const validBoolState = validateConnection('awsComponent', props.selected.id, props.box.id.toLowerCase());
-      if (!validBoolState) return ( props.setActionState('Error'));   
-     return props.setLines(lines => [
+      const validBoolState = validateConnection(
+        "awsComponent",
+        props.selected.id,
+        props.box.id.toLowerCase()
+      );
+      if (!validBoolState) return props.setActionState("Error");
+      return props.setLines(lines => [
         ...lines,
         {
           props: { start: props.selected.id, end: props.box.id }
         }
-      ]);  
-   
-     
+      ]);
     } else if (props.actionState === "Remove Connections") {
       props.setLines(lines =>
         lines.filter(
@@ -61,10 +68,10 @@ const Box = props => {
     <React.Fragment>
       <Rnd
         size={{ width: config.width, height: config.height }}
-        position={{ x: config.x, y: config.y }}
-       onDragStart={() => props.position !== "static"}
+        position={{ x: props.box.x, y: props.box.y }}
+        onDragStart={() => props.position !== "static"}
         // bounds="parent"
-        onDragStop={e => handleDrag(e, props.box.id)}
+        onDragStop={(e, d) => handleDrag(e, d)}
         onResize={(e, direction, ref, delta, position) => {
           setConfig({
             width: ref.style.width,
@@ -76,25 +83,20 @@ const Box = props => {
         id={props.box.id}
         ref={props.box.ref}
       >
-         <div
+        <div
           style={{
-            width: '100%',
-            height:'100%',
-            // left: props.box.x,
-            // top: props.box.y,
+            width: "100%",
+            height: "100%",
             background
-            // border: "black solid 2px",
           }}
-          onClick={handleClick}  
-        >   
+          onClick={handleClick}
+        >
           <img alt="src" src={props.box.img} id={props.box.id} />
-            <p>{props.box.name}</p>
+          <p>{props.box.name}</p>
         </div>
-          
       </Rnd>
     </React.Fragment>
   );
 };
 
 export default Box;
-
