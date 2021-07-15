@@ -19,7 +19,8 @@ const images = [
     name: "Cloudfront",
     type: "wideBox",
     friendlyName: "Cloudfront Distribution",
-    img: "https://logowik.com/content/uploads/images/aws-cloudfront6788.jpg"
+    img:
+      "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTTBt_980KKQlrbjPhDP5uZND3Y_Jtv3ZLe3nbBomQUvQitIh2X9ket3rE_isWy20DfFk0&usqp=CAU"
   },
   {
     id: "3",
@@ -27,6 +28,29 @@ const images = [
     type: "wideBox",
     friendlyName: "Users/Client",
     img: "https://static.thenounproject.com/png/428433-200.png"
+  },
+  {
+    id: "4",
+    name: "EC2",
+    type: "wideBox",
+    friendlyName: "EC2 Instance",
+    img:
+      "https://images.squarespace-cdn.com/content/v1/5500a991e4b0ed07e64029e1/1441073679931-NG5IMHQXY8PCNIIQ8LY6/image-asset.png?format=500w"
+  },
+  {
+    id: "5",
+    name: "DynamoDB",
+    type: "wideBox",
+    friendlyName: "Dynamo DB",
+    img: "https://upload.wikimedia.org/wikipedia/commons/f/fd/DynamoDB.png"
+  },
+  {
+    id: "6",
+    name: "Lambda",
+    type: "wideBox",
+    friendlyName: "Lambda Function",
+    img:
+      "https://upload.wikimedia.org/wikipedia/commons/thumb/8/8f/Orange_lambda.svg/980px-Orange_lambda.svg.png"
   }
 ];
 

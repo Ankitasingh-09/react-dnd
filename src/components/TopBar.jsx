@@ -97,7 +97,7 @@ const TopBar = props => {
       case "Add Connections":
         return (
           <div className="actionBubbles">
-            <p>To where connect new connection?</p>
+            <p>Where would you want new connection?</p>
             <div
               className="actionBubble"
               onClick={() => props.setActionState("Normal")}

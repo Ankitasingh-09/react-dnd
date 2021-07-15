@@ -42,11 +42,12 @@
 .imgContainer {
   display: flex;
   flex-direction: column;
+  cursor: pointer;
 }
 
 .imgContainer img {
-  width: 5em;
-  height: 5em;
+  width: 4em;
+  height: 4em;
 }
 
 .boxesContainer {
@@ -87,8 +88,8 @@
 
 .toolboxMenu {
   width: 20%;
-  background: rgb(200, 200, 200);
   text-align: center;
+  border: 1px solid #000;
 }
 
 .toolboxTitle {
@@ -97,8 +98,8 @@
 }
 .toolboxContainer {
   display: flex;
-  flex-direction: column;
   justify-content: space-evenly;
+  flex-wrap: wrap;
   align-items: center;
   height: calc(100% - 68px);
 }
