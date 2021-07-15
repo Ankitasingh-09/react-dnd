@@ -63,10 +63,13 @@ const PlayGround = () => {
     let result = images.filter(item => item.name === shape);
     if (result.length > 0) {
       let { x, y } = e.target.getBoundingClientRect();
-      var newName = result[0].name;
+      let uniqueVal = new Date().getTime().toString();
+      uniqueVal = uniqueVal.slice(uniqueVal.length - 2);
+      var newName = result[0].name + "_" + uniqueVal;
       if (newName) {
         let newBox = {
           id: newName,
+          name: result[0].name,
           x: e.clientX - x,
           y: e.clientY - y,
           shape,
@@ -83,22 +86,26 @@ const PlayGround = () => {
     lines.map((item, index) => {
       let startKey = item.props.start;
       let startObj = {
-        uniqueName: startKey,
+        uniqueName: boxes.find(item => item.id === startKey).name,
         friendlyName: boxes.find(item => item.id === startKey).friendlyName
       };
-      if (startKey !== "Users") {
+      if (startObj.uniqueName !== "Users") {
         startKey = "Component";
+      } else {
+        startKey = startObj.uniqueName;
       }
       models.push({ [startKey]: startObj });
 
       if (index === lines.length - 1) {
         let endKey = item.props.end;
         let endObj = {
-          uniqueName: endKey,
+          uniqueName: boxes.find(item => item.id === endKey).name,
           friendlyName: boxes.find(item => item.id === endKey).friendlyName
         };
-        if (endKey !== "Users") {
+        if (endObj.uniqueName !== "Users") {
           endKey = "Component";
+        } else {
+          endKey = endObj.uniqueName;
         }
         models.push({ [endKey]: endObj });
       }

@@ -2,7 +2,7 @@ import React from "react";
 import "./TopBar.css";
 
 const actions = {
-  box: ["Add Connections", "Remove Connections", "Delete"],
+  box: ["Add Connections", "Delete"],
   arrow: ["Remove Connection"]
 };
 
