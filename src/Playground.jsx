@@ -203,6 +203,7 @@ const PlayGround = () => {
               box={box}
               position="absolute"
               sidePos="middle"
+              setActionState={props.setActionState}
             />
           ))}
         </div>

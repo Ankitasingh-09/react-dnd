@@ -113,6 +113,19 @@ const TopBar = props => {
             <p>Which connection to remove?</p>
           </div>
         );
+      case "Error":
+        return (
+          <div className="actionBubbles">
+            <p>Connection Not feassible</p>
+            <div
+              className="actionBubble"
+              onClick={() => props.setActionState("Normal")}
+            >
+              finish
+            </div>
+          </div>
+        )
+     
       default:
     }
   };
