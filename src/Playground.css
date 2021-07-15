@@ -54,6 +54,8 @@
   position: relative;
   height: 100%;
   width: 80%;
+  background-size: cover;
+  background-image: url("https://cdn.shopify.com/s/files/1/2362/8001/products/Huacan-Diamond-Painting-Cross-Stitch-Accessories-Diamond-Embroidery-White-Canvas-DIY-Full-Square-Diamond-Mosaic-Pasted_19c77bd0-3092-4924-8a57-c39a9b3feae5_800x.jpg?v=1582230362");
   border: solid black 1px;
 }
 
