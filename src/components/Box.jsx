@@ -1,10 +1,17 @@
-import React from "react";
+import React, { useState } from "react";
 import "./Box.css";
-import Draggable from "react-draggable";
 import validateConnection from "../ruleEngine";
+import { Rnd } from "react-rnd";
 
 const Box = props => {
-  const handleDrag = () => props.setBoxes([...props.boxes]);
+  const [config,setConfig]=useState({width:'200',height:'200',x:props.box.x,y:props.box.y})
+
+  const handleDrag = (e, d) => {
+    
+    setConfig({ x: d.x, y: d.y });
+     props.setBoxes([...props.boxes]);
+  };
+
   const handleClick = e => {
     e.stopPropagation(); //so only the click event on the box will fire on not on the conainer itself
     if (props.actionState === "Normal") {
@@ -52,29 +59,42 @@ const Box = props => {
 
   return (
     <React.Fragment>
-      <Draggable
-        onStart={() => props.position !== "static"}
-        bounds="parent"
-        onDrag={e => handleDrag(e, props.box.id)}
+      <Rnd
+        size={{ width: config.width, height: config.height }}
+        position={{ x: config.x, y: config.y }}
+       onDragStart={() => props.position !== "static"}
+        // bounds="parent"
+        onDragStop={e => handleDrag(e, props.box.id)}
+        onResize={(e, direction, ref, delta, position) => {
+          setConfig({
+            width: ref.style.width,
+            height: ref.style.height,
+            ...position
+          });
+        }}
+        className={`${props.box.shape} ${props.position} imageContainer`}
+        id={props.box.id}
+        ref={props.box.ref}
       >
-        <div
-          ref={props.box.ref}
-          className={`${props.box.shape} ${props.position} imgContainer`}
+         <div
           style={{
-            left: props.box.x,
-            top: props.box.y,
+            width: '100%',
+            height:'100%',
+            // left: props.box.x,
+            // top: props.box.y,
             background
             // border: "black solid 2px",
           }}
-          onClick={handleClick}
-          id={props.box.id}
-        >
+          onClick={handleClick}  
+        >   
           <img alt="src" src={props.box.img} id={props.box.id} />
-          <p>{props.box.name}</p>
+            <p>{props.box.name}</p>
         </div>
-      </Draggable>
+          
+      </Rnd>
     </React.Fragment>
   );
 };
 
 export default Box;
+

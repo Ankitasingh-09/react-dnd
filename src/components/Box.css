@@ -10,8 +10,13 @@
   height: 50px;
 }
 
-.imgContainer p {
+.imageContainer p {
   margin: 0;
+}
+
+.imageContainer img {
+  width: 5em;
+  height: 70%;
 }
 
 .iconContainer {
@@ -22,4 +27,8 @@
   align-items: center;
   flex-direction: column;
   border-radius: 10px;
+}
+
+.test {
+  background-color: aqua;
 }
