@@ -70,7 +70,7 @@ const Box = props => {
           id={props.box.id}
         >
           <img alt="src" src={props.box.img} id={props.box.id} />
-          <p>{props.box.id}</p>
+          <p>{props.box.name}</p>
         </div>
       </Draggable>
     </React.Fragment>
