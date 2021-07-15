@@ -1,6 +1,7 @@
 import React from "react";
 import "./Box.css";
 import Draggable from "react-draggable";
+import validateConnection from "../ruleEngine";
 
 const Box = props => {
   const handleDrag = () => props.setBoxes([...props.boxes]);
@@ -12,12 +13,16 @@ const Box = props => {
       props.actionState === "Add Connections" &&
       props.selected.id !== props.box.id
     ) {
-      props.setLines(lines => [
+      const validBoolState = validateConnection('awsComponent', props.selected.id, props.box.id.toLowerCase());
+      if (!validBoolState) return ( props.setActionState('Error'));   
+     return props.setLines(lines => [
         ...lines,
         {
           props: { start: props.selected.id, end: props.box.id }
         }
-      ]);
+      ]);  
+   
+     
     } else if (props.actionState === "Remove Connections") {
       props.setLines(lines =>
         lines.filter(
