@@ -5,8 +5,8 @@ import { Rnd } from "react-rnd";
 
 const Box = props => {
   const [config, setConfig] = useState({
-    width: "200",
-    height: "200"
+    width: "100",
+    height: "100"
   });
 
   const handleDrag = (e, d) => {
@@ -92,7 +92,7 @@ const Box = props => {
           onClick={handleClick}
         >
           <img alt="src" src={props.box.img} id={props.box.id} />
-          <p>{props.box.name}</p>
+          <p> {props.box.name}</p>
         </div>
       </Rnd>
     </React.Fragment>

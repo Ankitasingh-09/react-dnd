@@ -1,9 +1,11 @@
-import React, { useState } from "react";
+import React, { createRef, useState } from "react";
+import * as htmlToImage from 'html-to-image';
 import "./Playground.css";
 import Box from "./components/Box";
 import TopBar from "./components/TopBar";
 import XArrow from "./components/Xarrow";
 const YAML = require("json-to-pretty-yaml");
+
 
 const images = [
   {
@@ -71,9 +73,10 @@ const PlayGround = () => {
   const [boxes, setBoxes] = useState([]);
   const [lines, setLines] = useState([]);
   const [ymlVal, setYmlVal] = useState("");
-
+  const [showDownloadButton, setShowDownloadButton] = useState(false);
   const [selected, setSelected] = useState(null);
   const [actionState, setActionState] = useState("Normal");
+  const ref = createRef(null);
 
   const handleSelect = e => {
     if (e === null) {
@@ -107,6 +110,7 @@ const PlayGround = () => {
 
   const generateYml = () => {
     let models = [];
+    setShowDownloadButton(false);
     lines.map((item, index) => {
       let startKey = item.props.start;
       let startObj = {
@@ -134,9 +138,41 @@ const PlayGround = () => {
         models.push({ [endKey]: endObj });
       }
     });
+    if (models && models.length) setShowDownloadButton(true);
     let yamlValue = YAML.stringify({ model: models });
     setYmlVal(yamlValue);
   };
+
+  const downloadYml = () => {
+    // file download
+    let yamlContent = "data:text/yaml;charset=utf-8," 
+    + ymlVal;
+    var encodedUri = encodeURI(yamlContent);
+    var link = document.createElement("a");
+    link.setAttribute("href", encodedUri);
+    link.setAttribute("download", "data.yaml");
+    document.body.appendChild(link);
+    link.click(); // This will download the data file named "data.yaml".
+  
+   
+  //  image download
+    ref.current.style.background = 'white';
+    ref.current.style.backgroundImage = "none";
+     document.getElementsByClassName('topBarStyle')[0].style.display = 'none';
+    htmlToImage.toPng(ref.current)
+      .then(function (dataUrl) {
+       
+      let a = document.createElement("a");
+        a.href = dataUrl;
+         a.download = 'image.png';
+        a.click();
+       ref.current.style.backgroundImage = "url('https://cdn.shopify.com/s/files/1/2362/8001/products/Huacan-Diamond-Painting-Cross-Stitch-Accessories-Diamond-Embroidery-White-Canvas-DIY-Full-Square-Diamond-Mosaic-Pasted_19c77bd0-3092-4924-8a57-c39a9b3feae5_800x.jpg?v=1582230362')";
+      ref.current.style.backgroundSize = 'cover';
+        document.getElementsByClassName('topBarStyle')[0].style.display = 'none';
+      });
+    
+ 
+  }
 
   const props = {
     interfaces,
@@ -193,6 +229,7 @@ const PlayGround = () => {
           className="boxesContainer"
           onDragOver={e => e.preventDefault()}
           onDrop={handleDropDynamic}
+          ref={ref}
         >
           <TopBar {...props} />
 
@@ -206,9 +243,8 @@ const PlayGround = () => {
               setActionState={props.setActionState}
             />
           ))}
-        </div>
 
-        {/* xarrow connections*/}
+            {/* xarrow connections*/}
         {lines.map((line, i) => (
           <XArrow
             key={line.props.root + "-" + line.props.end + i}
@@ -217,13 +253,18 @@ const PlayGround = () => {
             setSelected={setSelected}
           />
         ))}
+        </div>
+
+      
       </div>
 
       <div className="scriptContainer">
         <button onClick={generateYml}>Generate Yml</button>
+        {showDownloadButton && <button onClick={downloadYml}>Download File</button>}
         <div>
           <pre>{ymlVal}</pre>
         </div>
+      
       </div>
     </div>
   );
