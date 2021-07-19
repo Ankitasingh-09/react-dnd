@@ -2,12 +2,12 @@ import React, { useState } from "react";
 import Xarrow from "react-xarrows";
 
 const XArrow = ({ setSelected, selected, line: { props } }) => {
-  const [state, setState] = useState({ color: "coral" });
+  const [state, setState] = useState({ color: "#000" });
   const defProps = {
     passProps: {
       className: "xarrow",
       onMouseEnter: () => setState({ color: "IndianRed" }),
-      onMouseLeave: () => setState({ color: "coral" }),
+      onMouseLeave: () => setState({ color: "#000" }),
       onClick: e => {
         e.stopPropagation(); //so only the click event on the box will fire on not on the container itself
         setSelected({
@@ -15,7 +15,8 @@ const XArrow = ({ setSelected, selected, line: { props } }) => {
           type: "arrow"
         });
       },
-      cursor: "pointer"
+      cursor: "pointer",
+      strokeWidth: 1.5
     }
   };
   let color = state.color;
@@ -25,8 +26,10 @@ const XArrow = ({ setSelected, selected, line: { props } }) => {
     selected.id.root === props.root &&
     selected.id.end === props.end
   )
-    color = "red";
-  return <Xarrow {...{ ...defProps, ...props, ...state, color }} />;
+    color = "#000";
+  return (
+    <Xarrow headSize={3} {...{ ...defProps, ...props, ...state, color }} />
+  );
 };
 
 export default XArrow;
