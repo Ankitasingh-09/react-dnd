@@ -59,7 +59,9 @@ const Box = props => {
           style={{
             left: props.box.x,
             top: props.box.y,
-            background
+            background,
+            borderRadius: "0.5em",
+            padding: "0.3em"
           }}
           onClick={handleClick}
           id={props.box.id}

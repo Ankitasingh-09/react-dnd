@@ -245,13 +245,15 @@ const PlayGround = () => {
       </div>
 
       <div className="scriptContainer">
-        <button onClick={generateYml}>Generate Yml</button>
+        <button className="generateBtn" onClick={generateYml}>
+          Generate Yml
+        </button>
         {showDownloadButton && (
-          <button onClick={downloadYml}>Download File</button>
+          <button className="generateBtn downloadBtn" onClick={downloadYml}>
+            Download File
+          </button>
         )}
-        <div>
-          <pre>{ymlVal}</pre>
-        </div>
+        <div>{ymlVal && <pre>{ymlVal}</pre>}</div>
       </div>
     </div>
   );

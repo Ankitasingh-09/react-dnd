@@ -68,14 +68,14 @@
 .canvasStyle {
   display: flex;
   position: relative;
-  width: 68%;
+  width: 70%;
   height: 100%;
   justify-content: space-between;
   color: black;
 }
 
 .scriptContainer {
-  width: 30%;
+  width: 28%;
   height: 100%;
   position: relative;
   background: white;
@@ -88,6 +88,10 @@
 .scriptContainer pre {
   text-align: left;
   white-space: pre-wrap;
+  background: #000;
+  color: #72b1e8;
+  border-radius: 0.5em;
+  padding: 1em;
 }
 
 .toolboxMenu {
@@ -102,6 +106,9 @@
 .toolboxTitle {
   font-size: 20px;
   height: 50px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
 }
 .toolboxContainer {
   display: flex;
@@ -160,4 +167,24 @@
   align-items: center;
   flex-direction: column;
   border-radius: 10px;
+}
+
+.generateBtn {
+  border: none;
+  background: #f08383;
+  color: #fff;
+  border-radius: 1.5em;
+  padding: 0.5em;
+  cursor: pointer;
+  transition: 0.3s ease-in-out;
+}
+
+.generateBtn:hover {
+  background: #f05e5e;
+}
+
+.downloadBtn {
+  position: absolute;
+  top: 4em;
+  right: 2.8em;
 }
