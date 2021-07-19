@@ -9,7 +9,7 @@ import XArrow from "./components/Xarrow";
 const YAML = require("json-to-pretty-yaml");
 
 const BorderStyle = styled.div`
-border:${(props) => props.border === 'Solid' ? 'solid 2px #232F3F' : 'dashed 2px'};
+border:${(props) => props.border === 'Solid' ? 'solid 2px #232F3F' : 'dashed 2px #232F3F'};
 width:4em;
 height:4em;
 `;
