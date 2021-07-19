@@ -1,10 +1,28 @@
 import React, { createRef, useState } from "react";
-import * as htmlToImage from "html-to-image";
+import styled from 'styled-components';
+import * as htmlToImage from 'html-to-image';
 import "./Playground.css";
+import awsIcon from "./assets/awsIcon.svg";
 import Box from "./components/Box";
 import TopBar from "./components/TopBar";
 import XArrow from "./components/Xarrow";
 const YAML = require("json-to-pretty-yaml");
+
+const BorderStyle = styled.div`
+border:${(props) => props.border === 'Solid' ? 'solid 2px #232F3F' : 'dashed 2px #232F3F'};
+width:4em;
+height:4em;
+`;
+
+const Logo = styled.img`
+display:${(props) => props.border === 'Solid' ? 'block' : 'none'};
+background:#232F3F;
+width: 28px;
+height: 20px;
+top: 0%;
+left: 1%;
+position: absolute;
+`;
 
 const images = [
   {
@@ -55,6 +73,21 @@ const images = [
   }
 ];
 
+const borders = [
+  {
+    id: "7",
+    name: "Solid",
+    type: "border",
+    friendlyName: "Solid border",
+  },
+  {
+    id: "8",
+    name: "Dashed",
+    type: "border-dashed",
+    friendlyName: "Dashed border",
+  }
+];
+
 const PlayGround = () => {
   const [interfaces, setInterfaces] = useState([
     {
@@ -77,16 +110,17 @@ const PlayGround = () => {
   const [actionState, setActionState] = useState("Normal");
   const ref = createRef(null);
 
-  const handleSelect = e => {
+  const handleSelect = (e,type) => {
     if (e === null) {
       setSelected(null);
       setActionState("Normal");
-    } else setSelected({ id: e.target.id, type: "box" });
+    } else setSelected({ id: e.target.id, type: "box",connectionType:type });
   };
 
   const handleDropDynamic = e => {
     let shape = e.dataTransfer.getData("shape");
-    let result = images.filter(item => item.name === shape);
+    const items = [...images, ...borders];
+    let result = items.filter(item => item.name === shape);
     if (result.length > 0) {
       let { x, y } = e.target.getBoundingClientRect();
       let uniqueVal = new Date().getTime().toString();
@@ -100,7 +134,8 @@ const PlayGround = () => {
           y: e.clientY - y,
           shape,
           img: result[0].img,
-          friendlyName: result[0].friendlyName
+          friendlyName: result[0].friendlyName,
+          type:result[0].type,
         };
         setBoxes([...boxes, newBox]);
       }
@@ -210,7 +245,24 @@ const PlayGround = () => {
                 {shapeName.name}
               </div>
             ))}
+            {
+              borders.map(shapeName => (
+                <div
+                  key={shapeName.id}
+                  className="imgContainers"
+                  onDragStart={e =>
+                    e.dataTransfer.setData("shape", shapeName.name)
+                  }
+                  draggable
+                >
+                  <BorderStyle border={shapeName.name} />
+                  <Logo border={shapeName.name} src={awsIcon}/>
+                {shapeName.name}
+                </div>
+              ))
+            }
           </div>
+
         </div>
 
         <div

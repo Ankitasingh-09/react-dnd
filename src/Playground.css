@@ -51,6 +51,10 @@
   height: 4em;
 }
 
+.imgContainers {
+  position: relative;
+}
+
 .boxesContainer {
   position: relative;
   height: 100%;
