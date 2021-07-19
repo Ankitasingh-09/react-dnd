@@ -1,5 +1,5 @@
 import React,{useState} from "react";
-import styled, { css } from 'styled-components';
+import styled from 'styled-components';
 import "./Box.css";
 import Draggable from "react-draggable";
 import awsIcon from '../assets/awsIcon.svg';
@@ -102,7 +102,9 @@ const Box = props => {
             left: props.box.x,
             top: props.box.y,
             zIndex:1,
-            background
+            background,
+            borderRadius: "0.5em",
+            padding: "0.3em"
           }}
           onClick={handleClick}
           id={props.box.id}

@@ -1,5 +1,5 @@
 import React, { createRef, useState } from "react";
-import styled, { css } from 'styled-components';
+import styled from 'styled-components';
 import * as htmlToImage from 'html-to-image';
 import "./Playground.css";
 import awsIcon from "./assets/awsIcon.svg";
@@ -297,13 +297,15 @@ const PlayGround = () => {
       </div>
 
       <div className="scriptContainer">
-        <button onClick={generateYml}>Generate Yml</button>
+        <button className="generateBtn" onClick={generateYml}>
+          Generate Yml
+        </button>
         {showDownloadButton && (
-          <button onClick={downloadYml}>Download File</button>
+          <button className="generateBtn downloadBtn" onClick={downloadYml}>
+            Download File
+          </button>
         )}
-        <div>
-          <pre>{ymlVal}</pre>
-        </div>
+        <div>{ymlVal && <pre>{ymlVal}</pre>}</div>
       </div>
     </div>
   );

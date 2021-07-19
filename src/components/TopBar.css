@@ -29,12 +29,11 @@
 }
 
 .actionBubbles {
-  /* height: 150%; */
   display: flex;
   align-items: center;
   width: calc(100% - 120px);
   justify-content: space-evenly;
-  /* border: 3px dashed yellow; */
+  cursor: pointer;
 }
 
 .actionBubble {
