@@ -1,11 +1,10 @@
 import React, { createRef, useState } from "react";
-import * as htmlToImage from 'html-to-image';
+import * as htmlToImage from "html-to-image";
 import "./Playground.css";
 import Box from "./components/Box";
 import TopBar from "./components/TopBar";
 import XArrow from "./components/Xarrow";
 const YAML = require("json-to-pretty-yaml");
-
 
 const images = [
   {
@@ -22,14 +21,14 @@ const images = [
     type: "wideBox",
     friendlyName: "Cloudfront Distribution",
     img:
-      "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTTBt_980KKQlrbjPhDP5uZND3Y_Jtv3ZLe3nbBomQUvQitIh2X9ket3rE_isWy20DfFk0&usqp=CAU"
+      "https://cdn2.iconfinder.com/data/icons/amazon-aws-stencils/100/Storage__Content_Delivery_Amazon_CloudFront-512.png"
   },
   {
     id: "3",
     name: "Users",
     type: "wideBox",
     friendlyName: "Users/Client",
-    img: "https://static.thenounproject.com/png/428433-200.png"
+    img: "https://image.flaticon.com/icons/png/512/149/149071.png"
   },
   {
     id: "4",
@@ -37,7 +36,7 @@ const images = [
     type: "wideBox",
     friendlyName: "EC2 Instance",
     img:
-      "https://images.squarespace-cdn.com/content/v1/5500a991e4b0ed07e64029e1/1441073679931-NG5IMHQXY8PCNIIQ8LY6/image-asset.png?format=500w"
+      "https://3.bp.blogspot.com/-FrICgv9QTCw/W4_6L1yivpI/AAAAAAAAAD8/HUckFVLJglUNBn_co1TaFHcwvxv7CPmUACLcBGAs/s1600/Compute_AmazonEC2.png"
   },
   {
     id: "5",
@@ -145,34 +144,25 @@ const PlayGround = () => {
 
   const downloadYml = () => {
     // file download
-    let yamlContent = "data:text/yaml;charset=utf-8," 
-    + ymlVal;
+    let yamlContent = "data:text/yaml;charset=utf-8," + ymlVal;
     var encodedUri = encodeURI(yamlContent);
     var link = document.createElement("a");
     link.setAttribute("href", encodedUri);
     link.setAttribute("download", "data.yaml");
     document.body.appendChild(link);
     link.click(); // This will download the data file named "data.yaml".
-  
-   
-  //  image download
-    ref.current.style.background = 'white';
+
+    //  image download
+    ref.current.style.background = "white";
     ref.current.style.backgroundImage = "none";
-     document.getElementsByClassName('topBarStyle')[0].style.display = 'none';
-    htmlToImage.toPng(ref.current)
-      .then(function (dataUrl) {
-       
+    document.getElementsByClassName("topBarStyle")[0].style.display = "none";
+    htmlToImage.toPng(ref.current).then(function(dataUrl) {
       let a = document.createElement("a");
-        a.href = dataUrl;
-         a.download = 'image.png';
-        a.click();
-       ref.current.style.backgroundImage = "url('https://cdn.shopify.com/s/files/1/2362/8001/products/Huacan-Diamond-Painting-Cross-Stitch-Accessories-Diamond-Embroidery-White-Canvas-DIY-Full-Square-Diamond-Mosaic-Pasted_19c77bd0-3092-4924-8a57-c39a9b3feae5_800x.jpg?v=1582230362')";
-      ref.current.style.backgroundSize = 'cover';
-        document.getElementsByClassName('topBarStyle')[0].style.display = 'none';
-      });
-    
- 
-  }
+      a.href = dataUrl;
+      a.download = "image.png";
+      a.click();
+    });
+  };
 
   const props = {
     interfaces,
@@ -205,8 +195,7 @@ const PlayGround = () => {
         onClick={() => handleSelect(null)}
       >
         <div className="toolboxMenu">
-          <div className="toolboxTitle">AWS Components</div>
-          <hr />
+          <div className="toolboxTitle">Elements Selector</div>
           <div className="toolboxContainer">
             {images.map(shapeName => (
               <div
@@ -240,31 +229,29 @@ const PlayGround = () => {
               box={box}
               position="absolute"
               sidePos="middle"
-              setActionState={props.setActionState}
             />
           ))}
 
-            {/* xarrow connections*/}
-        {lines.map((line, i) => (
-          <XArrow
-            key={line.props.root + "-" + line.props.end + i}
-            line={line}
-            selected={selected}
-            setSelected={setSelected}
-          />
-        ))}
+          {/* xarrow connections*/}
+          {lines.map((line, i) => (
+            <XArrow
+              key={line.props.root + "-" + line.props.end + i}
+              line={line}
+              selected={selected}
+              setSelected={setSelected}
+            />
+          ))}
         </div>
-
-      
       </div>
 
       <div className="scriptContainer">
         <button onClick={generateYml}>Generate Yml</button>
-        {showDownloadButton && <button onClick={downloadYml}>Download File</button>}
+        {showDownloadButton && (
+          <button onClick={downloadYml}>Download File</button>
+        )}
         <div>
           <pre>{ymlVal}</pre>
         </div>
-      
       </div>
     </div>
   );
