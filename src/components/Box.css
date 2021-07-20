@@ -19,6 +19,11 @@
   min-height: 6em;
 }
 
+.imageContainer img {
+  width: 4em;
+  height: 4em;
+}
+
 .iconContainer {
   border-color: #999;
   border-style: solid;
