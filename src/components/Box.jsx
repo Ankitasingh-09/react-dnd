@@ -1,36 +1,39 @@
 import React,{useEffect, useState} from "react";
 import styled from 'styled-components';
 import "./Box.css";
-import Draggable from "react-draggable";
-import awsIcon from '../assets/awsIcon.svg';
+import awsIcon from "../assets/awsIcon.svg";
+import { useSelector, useDispatch } from 'react-redux';
 import { Rnd } from "react-rnd";
-import calculateWidthHeight from "../utils/calculateCoordinates";
-import calculateBoundingAreas from "../utils/calculateBoundingArea";
+import { addComponent, getBoundingArea } from "../redux/components/components.actions";
 
 const BorderStyle = styled.div`
-border:${(props) => props.border === 'Solid' ? 'solid 2px #232F3F' : 'dashed 2px #008000'};
-width:100%;
-height:100%;
+  border: ${props =>
+    props.border === "Solid" ? "solid 2px #232F3F" : "dashed 2px #008000"};
+  width: 100%;
+  height: 100%;
 `;
 
 const Logo = styled.img`
-display:${(props) => props.border === 'Solid' ? 'block' : 'none'};
-background:#232F3F;
-width: calc(100% - 92%);
-height: calc(100% - 95%);
-min-height:20px;
-min-width:30px;
-top: 0%;
-left: 0%;
-position: absolute;
-&:after{
-  content: "Joe's Task: ";
-}
+  display: ${props => (props.border === "Solid" ? "block" : "none")};
+  background: #232f3f;
+  width: calc(100% - 92%);
+  height: calc(100% - 95%);
+  min-height: 20px;
+  min-width: 30px;
+  top: 0%;
+  left: 0%;
+  position: absolute;
+  &:after {
+    content: "Joe's Task: ";
+  }
 `;
 
-
-
 const Box = props => {
+  const dispatch = useDispatch();
+  const initialState = useSelector((state) => state);
+  const locationCoordinates = initialState?.components?.componentsItems;
+  const boundedArea = initialState?.components?.getBoundingArea;
+  console.log({ boundedArea });
   const [config, setConfig] = useState({
     width: "100",
     height: "100"
@@ -40,43 +43,30 @@ const Box = props => {
     x: props.box.x,
     y:props.box.y,
   })
-  
-  const [locationCoordinates, setLocationCoordinates] = useState({});
-
+ 
   
   useEffect(() => {
     calculateCoordinates();
 },[])
 
   const calculateCoordinates = () => {
-    const location = {};
-    console.log("bbbbb", props);
 
-    // props.boxes.map(box => {
-      // console.log("calleddd again and again");
-     const widthHeight = calculateWidthHeight(props.box.x,props.box.y,config.width,config.height);
-      location[props.box.id] = {
-        x1: props.box.x,
-        y1: props.box.y,
-        x2: widthHeight.boxWidth,
-        y2:widthHeight.boxHeight,
-      }
-    // })
-    setLocationCoordinates({
-      ...locationCoordinates,
-      ...location
-    });
-    
-   
+    const values = {
+      id:props.box.id,
+      x: props.box.x,
+      y: props.box.y,
+      width: config.width,
+      height:config.height
+    }
+    dispatch(addComponent(values));
+    dispatch(getBoundingArea());
   }
   
-  const handleDrag = () => props.setBoxes([...props.boxes]);
 
   const handleDragBox = (e, d) => {
     props.setBoxes(boxes => {
       return boxes.map(box => {
         if (box.id === props.box.id) {
-          console.log("bbbbbbbb", box.id,d.x,d.y,config.width,config.height);
           setCoordSelectedBox({
             x: d.x,
             y:d.y,
@@ -90,27 +80,22 @@ const Box = props => {
   };
 
   const calculateDragAndDropCoordinates = (id,x,y,offsetWidth,offsetHeight) => {
-    const location = [];
-    console.log("coord",x,y,offsetWidth,offsetHeight,typeof x,typeof offsetWidth)
-    const widthHeight = calculateWidthHeight(x, y,offsetWidth,offsetHeight);
-    location[id] = {
-      x1: x,
-      y1: y,
-      x2: widthHeight.boxWidth,
-      y2: widthHeight.boxHeight,
-    };
-    setLocationCoordinates({
-      ...locationCoordinates,
-      ...location
-})
+    const values = {
+      id:id,
+      x: x,
+      y: y,
+      width:offsetWidth,
+      height:offsetHeight,
+    }
+    dispatch(addComponent(values));
+    dispatch(getBoundingArea());
     
 }
 
   const handleClick = e => {
-   
     e.stopPropagation(); //so only the click event on the box will fire on not on the conainer itself
     if (props.actionState === "Normal") {
-      props.handleSelect(e,props.box.type);
+      props.handleSelect(e, props.box.type);
     } else if (
       props.actionState === "Add Connections" &&
       props.selected.id !== props.box.id
@@ -130,14 +115,17 @@ const Box = props => {
       );
     }
   };
- 
+
   let background = null;
   if (props.selected && props.selected.id === props.box.id) {
-    background = props?.box?.type==="wideBox"?"rgb(200, 200, 200)":"rgba(220, 240, 250,0.5)";
+    background =
+      props?.box?.type === "wideBox"
+        ? "rgb(200, 200, 200)"
+        : "rgba(220, 240, 250,0.5)";
   } else if (
     (props.actionState === "Add Connections" &&
       // props.sidePos !== "right" &&
-      props.box.type===props.selected.connectionType &&
+      // props.box.type === props.selected.connectionType &&
       props.lines.filter(
         line => line.root === props.selected.id && line.end === props.box.id
       ).length === 0) ||
@@ -146,14 +134,9 @@ const Box = props => {
         line => line.root === props.selected.id && line.end === props.box.id
       ).length > 0)
   ) {
-    
     background = "LemonChiffon";
   }
 
-  // if (locationCoordinates) {
-  //    const boundedAreas = calculateBoundingAreas(locationCoordinates);
-  // }
-  console.log({locationCoordinates})
   return (
     <React.Fragment>
        <Rnd
