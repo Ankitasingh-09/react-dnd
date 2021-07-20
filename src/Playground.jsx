@@ -196,7 +196,10 @@ const PlayGround = () => {
         newModel.push({ ["boundary"]: obj });
       }
       boundedArea[item].map(data => {
-        if (data.split("_")[0] !== "Context" && data.split("_")[0] !== "Solid") {
+        if (
+          data.split("_")[0] !== "Context" &&
+          data.split("_")[0] !== "Solid"
+        ) {
           let obj = {
             uniqueName: images.find(item => item.name === data.split("_")[0])
               .name,
@@ -236,9 +239,6 @@ const PlayGround = () => {
     link.click(); // This will download the data file named "data.yaml".
 
     //  image download
-    ref.current.style.background = "white";
-    ref.current.style.backgroundImage = "none";
-    document.getElementsByClassName("topBarStyle")[0].style.display = "none";
     htmlToImage.toPng(ref.current).then(function(dataUrl) {
       let a = document.createElement("a");
       a.href = dataUrl;
