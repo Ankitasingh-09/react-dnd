@@ -1,6 +1,12 @@
 export const addComponetsToItem = (componentsItem, componentToAdd) => {
   //logic
-  const { height, width, id, x, y } = componentToAdd;
+  let { height, width, id, x, y } = componentToAdd;
+  if (id.indexOf("Dashed") !== -1 || id.indexOf("Solid") !== -1) {
+    x = x - 30;
+    y = y - 30;
+    width = parseFloat(width) + 30;
+    height = parseFloat(height) + 30;
+  }
   const calculateWidthHeight = () => {
     return {
       boxWidth: parseFloat(x) + parseFloat(width),
