@@ -176,56 +176,67 @@ const PlayGround = () => {
         models.push({ [endKey]: endObj });
       }
     });
-    console.log("models", models);
-    console.log("boundedArea", boundedArea);
+  
     let newModel = [];
     let keys = Object.keys(boundedArea);
+    if (keys.length === 0) {
+      newModel = models;
+    } else {
 
-    keys.map(item => {
-      if (item.split("_")[0] === "AWS") {
-        let obj = {
-          uniqueName: "innerBoundary",
-          friendlyName: "innerBoundary/innerContext"
-        };
-        newModel.push({ ["boundary"]: obj });
-      } else {
-        let obj = {
-          uniqueName: "awsBoundary",
-          friendlyName: "awsBoundary/AwsContext"
-        };
-        newModel.push({ ["boundary"]: obj });
-      }
-      boundedArea[item].map(data => {
-        if (data.split("_")[0] !== "Context" && data.split("_")[0] !== "Solid") {
+      keys.map(item => {
+        if (item.split("_")[0] === "AWS") {
           let obj = {
-            uniqueName: images.find(item => item.name === data.split("_")[0])
-              .name,
-            friendlyName: images.find(item => item.name === data.split("_")[0])
-              .friendlyName
+            uniqueName: "innerBoundary",
+            friendlyName: "innerBoundary/innerContext"
           };
-          let keyName = "User";
-          if (data.split("_")[0] !== "User") {
-            keyName = "component";
+          newModel.push({ ["boundary"]: obj });
+        } else {
+          let obj = {
+            uniqueName: "awsBoundary",
+            friendlyName: "awsBoundary/AwsContext"
+          };
+          newModel.push({ ["boundary"]: obj });
+        }
+        boundedArea[item].map(data => {
+          if (data.split("_")[0] !== "Context" && data.split("_")[0] !== "Solid") {
+            let obj = {
+              uniqueName: images.find(item => item.name === data.split("_")[0])
+                .name,
+              friendlyName: images.find(item => item.name === data.split("_")[0])
+                .friendlyName
+            };
+            let keyName = "User";
+            if (data.split("_")[0] !== "User") {
+              keyName = "component";
+            }
+            newModel.push({ [keyName]: obj });
           }
-          newModel.push({ [keyName]: obj });
+        });
+      });
+
+      models.map(item => {
+        if (item.hasOwnProperty("Users")) {
+          newModel.unshift(item);
         }
       });
-    });
-
-    models.map(item => {
-      if (item.hasOwnProperty("Users")) {
-        newModel.unshift(item);
-      }
-    });
-
-    console.log("newModel", newModel);
-
+    }
+  
     if (newModel && newModel.length) setShowDownloadButton(true);
     let yamlValue = YAML.stringify({ model: newModel });
     setYmlVal(yamlValue);
   };
 
   const downloadYml = () => {
+    //  image download
+    document.getElementsByClassName("topBarStyle")[0].style.display = "none";
+    htmlToImage.toPng(ref.current).then(function(dataUrl) {
+      let a = document.createElement("a");
+      a.href = dataUrl;
+      a.download = "image.png";
+      a.click();
+      document.getElementsByClassName("topBarStyle")[0].style.display = "block";
+    });
+   
     // file download
     let yamlContent = "data:text/yaml;charset=utf-8," + ymlVal;
     var encodedUri = encodeURI(yamlContent);
@@ -235,16 +246,7 @@ const PlayGround = () => {
     document.body.appendChild(link);
     link.click(); // This will download the data file named "data.yaml".
 
-    //  image download
-    ref.current.style.background = "white";
-    ref.current.style.backgroundImage = "none";
-    document.getElementsByClassName("topBarStyle")[0].style.display = "none";
-    htmlToImage.toPng(ref.current).then(function(dataUrl) {
-      let a = document.createElement("a");
-      a.href = dataUrl;
-      a.download = "image.png";
-      a.click();
-    });
+    
   };
 
   const props = {
