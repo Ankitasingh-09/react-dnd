@@ -1,7 +1,7 @@
 export const addComponetsToItem = (componentsItem, componentToAdd) => {
   //logic
   let { height, width, id, x, y } = componentToAdd;
-  if (id.indexOf("Dashed") !== -1 || id.indexOf("Solid") !== -1) {
+  if (id.indexOf("Context") !== -1 || id.indexOf("AWS") !== -1) {
     x = x - 30;
     y = y - 30;
     width = parseFloat(width) + 30;
@@ -38,7 +38,7 @@ export const getBoundingAreaState = (componentsItem, currentComponent) => {
   };
 
   Object.keys(currentComponent).map((keys) => {
-    if (keys.indexOf("Dashed") >= 0 || keys.indexOf("Solid") >= 0) {
+    if (keys.indexOf("Context") >= 0 || keys.indexOf("AWS") >= 0) {
       let outerBoundCoordinates = currentComponent[keys];
       const areaBoundedValues = [];
       Object.keys(currentComponent).map((content) => {
@@ -59,10 +59,10 @@ export const getBoundingAreaState = (componentsItem, currentComponent) => {
   });
 
   Object.keys(componentsItem).map((key) => {
-    if (key.includes("Solid")) {
+    if (key.includes("AWS")) {
       const chooseValuesToSlice = [];
       Object.keys(componentsItem).map((item) => {
-        if (item.includes("Dashed")) {
+        if (item.includes("Context")) {
           chooseValuesToSlice.push(componentsItem[item]);
         }
         return null;

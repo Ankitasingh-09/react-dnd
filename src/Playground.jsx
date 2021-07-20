@@ -11,13 +11,13 @@ const YAML = require("json-to-pretty-yaml");
 
 const BorderStyle = styled.div`
   border: ${props =>
-    props.border === "Solid" ? "solid 2px #232F3F" : "dashed 2px #232F3F"};
+    props.border === "AWS" ? "solid 2px #232F3F" : "dashed 2px #232F3F"};
   width: 4em;
   height: 4em;
 `;
 
 const Logo = styled.img`
-  display: ${props => (props.border === "Solid" ? "block" : "none")};
+  display: ${props => (props.border === "AWS" ? "block" : "none")};
   background: #232f3f;
   width: 28px;
   height: 20px;
@@ -78,13 +78,13 @@ const images = [
 const borders = [
   {
     id: "7",
-    name: "Solid",
+    name: "AWS",
     type: "border",
     friendlyName: "Solid border"
   },
   {
     id: "8",
-    name: "Dashed",
+    name: "Context",
     type: "border-dashed",
     friendlyName: "Dashed border"
   }
@@ -182,7 +182,7 @@ const PlayGround = () => {
     let keys = Object.keys(boundedArea);
 
     keys.map(item => {
-      if (item.split("_")[0] === "Dashed") {
+      if (item.split("_")[0] === "AWS") {
         let obj = {
           uniqueName: "innerBoundary",
           friendlyName: "innerBoundary/innerContext"
@@ -196,7 +196,7 @@ const PlayGround = () => {
         newModel.push({ ["boundary"]: obj });
       }
       boundedArea[item].map(data => {
-        if (data.split("_")[0] !== "Dashed" && data.split("_")[0] !== "Solid") {
+        if (data.split("_")[0] !== "Context" && data.split("_")[0] !== "Solid") {
           let obj = {
             uniqueName: images.find(item => item.name === data.split("_")[0])
               .name,

@@ -8,13 +8,13 @@ import { addComponent, getBoundingArea } from "../redux/components/components.ac
 
 const BorderStyle = styled.div`
   border: ${props =>
-    props.border === "Solid" ? "solid 2px #232F3F" : "dashed 2px #008000"};
+    props.border === "AWS" ? "solid 2px #232F3F" : "dashed 2px #008000"};
   width: 100%;
   height: 100%;
 `;
 
 const Logo = styled.img`
-  display: ${props => (props.border === "Solid" ? "block" : "none")};
+  display: ${props => (props.border === "AWS" ? "block" : "none")};
   background: #232f3f;
   width: calc(100% - 92%);
   height: calc(100% - 95%);
@@ -154,7 +154,7 @@ const Box = props => {
           });
        
         }}
-        className={`${props.box.shape} ${props.position} imageContainer ${props.box.img?'addZindex':props.box.name==="Dashed"?'dashedZindex':''}`}
+        className={`${props.box.shape} ${props.position} imageContainer ${props.box.img?'addZindex':props.box.name==="Context"?'dashedZindex':''}`}
         id={props.box.id}
         ref={props.box.ref}
       >
