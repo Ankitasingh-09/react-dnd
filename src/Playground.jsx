@@ -180,42 +180,49 @@ const PlayGround = () => {
     console.log("boundedArea", boundedArea);
     let newModel = [];
     let keys = Object.keys(boundedArea);
-    // keys.map(item => {
-    //   if (item.split("_")[0] === "Dashed") {
-    //     let obj = {
-    //       uniqueName: "innerBoundary",
-    //       friendlyName: "innerBoundary/Context"
-    //     };
-    //     newModel.push({ boundary: obj });
-    //   } else {
-    //     let obj = {
-    //       uniqueName: "awsBoundary",
-    //       friendlyName: "awsBoundary/Context"
-    //     };
-    //     newModel.push({ boundary: obj });
-    //   }
-    //   boundedArea[item].map(data => {
-    //     if (data.split('_')[0] !== 'Dashed' || data.split('_')[0] !== 'Solid') {
-    //       let obj = {
-    //         uniqueName: images.find(item => item.name === data.split("_")[0])
-    //           .name,
-    //         friendlyName: images.find(item => item.name === data.split("_")[0])
-    //           .friendlyName
-    //       };
-    //       let keyName = "User";
-    //       if (data.split("_")[0] !== "User") {
-    //         keyName = "component";
-    //       }
-    //       newModel.push({ [keyName]: obj });
-    //     } else {
 
-    //     }
-    //   });
-    // });
+    keys.map(item => {
+      if (item.split("_")[0] === "Dashed") {
+        let obj = {
+          uniqueName: "innerBoundary",
+          friendlyName: "innerBoundary/Context"
+        };
+        newModel.push({ ["boundary"]: obj });
+      } else {
+        let obj = {
+          uniqueName: "awsBoundary",
+          friendlyName: "awsBoundary/Context"
+        };
+        newModel.push({ ["boundary"]: obj });
+      }
+      boundedArea[item].map(data => {
+        if (data.split("_")[0] !== "Dashed" && data.split("_")[0] !== "Solid") {
+          let obj = {
+            uniqueName: images.find(item => item.name === data.split("_")[0])
+              .name,
+            friendlyName: images.find(item => item.name === data.split("_")[0])
+              .friendlyName
+          };
+          let keyName = "User";
+          if (data.split("_")[0] !== "User") {
+            keyName = "component";
+          }
+          newModel.push({ [keyName]: obj });
+        }
+      });
+    });
 
-    // if (models && models.length) setShowDownloadButton(true);
-    // let yamlValue = YAML.stringify({ model: models });
-    // setYmlVal(yamlValue);
+    models.map(item => {
+      if (item.hasOwnProperty("Users")) {
+        newModel.unshift(item);
+      }
+    });
+
+    console.log("newModel", newModel);
+
+    if (newModel && newModel.length) setShowDownloadButton(true);
+    let yamlValue = YAML.stringify({ model: newModel });
+    setYmlVal(yamlValue);
   };
 
   const downloadYml = () => {
