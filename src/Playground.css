@@ -56,6 +56,15 @@
   height: 4em;
 }
 
+.yamlContent {
+  height: 90vh;
+  overflow: auto;
+}
+
+.yamlContent::-webkit-scrollbar {
+  display: none;
+}
+
 .imgContainers {
   position: relative;
 }

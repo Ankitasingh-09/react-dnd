@@ -185,13 +185,13 @@ const PlayGround = () => {
       if (item.split("_")[0] === "Dashed") {
         let obj = {
           uniqueName: "innerBoundary",
-          friendlyName: "innerBoundary/Context"
+          friendlyName: "innerBoundary/innerContext"
         };
         newModel.push({ ["boundary"]: obj });
       } else {
         let obj = {
           uniqueName: "awsBoundary",
-          friendlyName: "awsBoundary/Context"
+          friendlyName: "awsBoundary/AwsContext"
         };
         newModel.push({ ["boundary"]: obj });
       }
@@ -350,7 +350,7 @@ const PlayGround = () => {
             Download File
           </button>
         )}
-        <div>{ymlVal && <pre>{ymlVal}</pre>}</div>
+        <div className="yamlContent">{ymlVal && <pre>{ymlVal}</pre>}</div>
       </div>
     </div>
   );
