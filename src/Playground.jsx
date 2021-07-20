@@ -5,6 +5,7 @@ import "./Playground.css";
 import awsIcon from "./assets/awsIcon.svg";
 import Box from "./components/Box";
 import TopBar from "./components/TopBar";
+import { useSelector } from "react-redux";
 import XArrow from "./components/Xarrow";
 const YAML = require("json-to-pretty-yaml");
 
@@ -110,6 +111,7 @@ const PlayGround = () => {
   const [selected, setSelected] = useState(null);
   const [actionState, setActionState] = useState("Normal");
   const ref = createRef(null);
+  const boundedArea = useSelector(state => state.components.getBoundingArea);
 
   const handleSelect = (e, type) => {
     if (e === null) {
@@ -146,6 +148,7 @@ const PlayGround = () => {
   const generateYml = () => {
     let models = [];
     setShowDownloadButton(false);
+
     lines.map((item, index) => {
       let startKey = item.props.start;
       let startObj = {
@@ -173,9 +176,46 @@ const PlayGround = () => {
         models.push({ [endKey]: endObj });
       }
     });
-    if (models && models.length) setShowDownloadButton(true);
-    let yamlValue = YAML.stringify({ model: models });
-    setYmlVal(yamlValue);
+    console.log("models", models);
+    console.log("boundedArea", boundedArea);
+    let newModel = [];
+    let keys = Object.keys(boundedArea);
+    // keys.map(item => {
+    //   if (item.split("_")[0] === "Dashed") {
+    //     let obj = {
+    //       uniqueName: "innerBoundary",
+    //       friendlyName: "innerBoundary/Context"
+    //     };
+    //     newModel.push({ boundary: obj });
+    //   } else {
+    //     let obj = {
+    //       uniqueName: "awsBoundary",
+    //       friendlyName: "awsBoundary/Context"
+    //     };
+    //     newModel.push({ boundary: obj });
+    //   }
+    //   boundedArea[item].map(data => {
+    //     if (data.split('_')[0] !== 'Dashed' || data.split('_')[0] !== 'Solid') {
+    //       let obj = {
+    //         uniqueName: images.find(item => item.name === data.split("_")[0])
+    //           .name,
+    //         friendlyName: images.find(item => item.name === data.split("_")[0])
+    //           .friendlyName
+    //       };
+    //       let keyName = "User";
+    //       if (data.split("_")[0] !== "User") {
+    //         keyName = "component";
+    //       }
+    //       newModel.push({ [keyName]: obj });
+    //     } else {
+
+    //     }
+    //   });
+    // });
+
+    // if (models && models.length) setShowDownloadButton(true);
+    // let yamlValue = YAML.stringify({ model: models });
+    // setYmlVal(yamlValue);
   };
 
   const downloadYml = () => {
