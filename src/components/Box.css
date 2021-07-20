@@ -14,6 +14,14 @@
   margin: 0;
 }
 
+.addZindex {
+  z-index: 1000;
+}
+
+.dashedZindex {
+  z-index: 500;
+}
+
 .imageContainer {
   min-width: 6em;
   min-height: 6em;

@@ -33,7 +33,7 @@ const Box = props => {
   const initialState = useSelector((state) => state);
   const locationCoordinates = initialState?.components?.componentsItems;
   const boundedArea = initialState?.components?.getBoundingArea;
-  console.log({ boundedArea });
+
   const [config, setConfig] = useState({
     width: "100",
     height: "100"
@@ -115,7 +115,7 @@ const Box = props => {
       );
     }
   };
-
+  
   let background = null;
   if (props.selected && props.selected.id === props.box.id) {
     background =
@@ -125,7 +125,7 @@ const Box = props => {
   } else if (
     (props.actionState === "Add Connections" &&
       // props.sidePos !== "right" &&
-      // props.box.type === props.selected.connectionType &&
+     props.box.type === props.selected.connectionType &&
       props.lines.filter(
         line => line.root === props.selected.id && line.end === props.box.id
       ).length === 0) ||
@@ -154,7 +154,7 @@ const Box = props => {
           });
        
         }}
-        className={`${props.box.shape} ${props.position} imageContainer`}
+        className={`${props.box.shape} ${props.position} imageContainer ${props.box.img?'addZindex':props.box.name==="Dashed"?'dashedZindex':''}`}
         id={props.box.id}
         ref={props.box.ref}
       >
