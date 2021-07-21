@@ -213,7 +213,7 @@ const PlayGround = () => {
           newModel.push({ ["boundary"]: obj });
         }
         boundedArea[item].map(data => {
-          if (data.split("_")[0] !== "Context" && data.split("_")[0] !== "Solid") {
+          if (data.split("_")[0] !== "Context" && data.split("_")[0] !== "AWS") {
             let obj = {
               uniqueName: images.find(item => item.name === data.split("_")[0])
                 .name,
