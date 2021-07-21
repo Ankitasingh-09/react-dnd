@@ -191,15 +191,15 @@ const PlayGround = () => {
         models.push({ [endKey]: endObj });
       }
     });
-  
-    let newModel = [];
-    let keys = Object.keys(boundedArea);
-    if (keys.length === 0) {
-      newModel = models;
-    } else {
 
+    let newModel = [];
+    let uniqueLists = [];
+    let componentSets = [];
+    let keys = Object.keys(boundedArea);
+
+    if (keys.length) {
       keys.map(item => {
-        if (item.split("_")[0] === "AWS") {
+        if (item.split("_")[0] === "Context") {
           let obj = {
             uniqueName: "innerBoundary",
             friendlyName: "innerBoundary/innerContext"
@@ -213,18 +213,27 @@ const PlayGround = () => {
           newModel.push({ ["boundary"]: obj });
         }
         boundedArea[item].map(data => {
-          if (data.split("_")[0] !== "Context" && data.split("_")[0] !== "AWS") {
-            let obj = {
-              uniqueName: images.find(item => item.name === data.split("_")[0])
-                .name,
-              friendlyName: images.find(item => item.name === data.split("_")[0])
-                .friendlyName
-            };
-            let keyName = "User";
-            if (data.split("_")[0] !== "User") {
-              keyName = "component";
+          if (uniqueLists.indexOf(data) === -1) {
+            uniqueLists.push(data);
+            componentSets.push(data.split('_')[0]);
+            if (
+              data.split("_")[0] !== "Context" &&
+              data.split("_")[0] !== "AWS"
+            ) {
+              let obj = {
+                uniqueName: images.find(
+                  item => item.name === data.split("_")[0]
+                ).name,
+                friendlyName: images.find(
+                  item => item.name === data.split("_")[0]
+                ).friendlyName
+              };
+              let keyName = "User";
+              if (data.split("_")[0] !== "User") {
+                keyName = "component";
+              }
+              newModel.push({ [keyName]: obj });
             }
-            newModel.push({ [keyName]: obj });
           }
         });
       });
@@ -233,14 +242,19 @@ const PlayGround = () => {
         if (item.hasOwnProperty("Users")) {
           newModel.unshift(item);
         }
+        if (componentSets.indexOf(item.Component?.uniqueName) === -1) {
+          newModel.unshift(item.Component);
+        }
       });
+    } else {
+      newModel = models;
     }
-  
+
     if (newModel && newModel.length) setShowDownloadButton(true);
     let yamlValue = YAML.stringify({ model: newModel });
     setYmlVal(yamlValue);
   };
-
+  
   const downloadYml = () => {
     //  image download
     document.getElementsByClassName("topBarStyle")[0].style.display = "none";
