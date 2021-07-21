@@ -22,7 +22,7 @@ const Logo = styled.img`
   width: 28px;
   height: 20px;
   top: 0%;
-  left: 1%;
+  left: 0.9em;
   position: absolute;
 `;
 
@@ -72,6 +72,21 @@ const images = [
     friendlyName: "Lambda Function",
     img:
       "https://upload.wikimedia.org/wikipedia/commons/thumb/8/8f/Orange_lambda.svg/980px-Orange_lambda.svg.png"
+  },
+  {
+    id: "6",
+    name: "RDS",
+    type: "wideBox",
+    friendlyName: "RDS",
+    img:
+      "https://d1.awsstatic.com/icons/jp/rds_icon_concole.fe14dd124ff0ce7cd8f55f63e0112170c35885f1.png"
+  },
+  {
+    id: "7",
+    name: "ELB",
+    type: "wideBox",
+    friendlyName: "Elastic Load Balancer",
+    img: "https://cdn.buttercms.com/BDcRbaQTAOB5CoeCTJFv"
   }
 ];
 
@@ -328,6 +343,7 @@ const PlayGround = () => {
               box={box}
               position="absolute"
               sidePos="middle"
+              setActionState={props.setActionState}
             />
           ))}
 
