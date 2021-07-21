@@ -1,10 +1,14 @@
-import React,{useEffect, useState} from "react";
-import styled from 'styled-components';
+import React, { useEffect, useState } from "react";
+import styled from "styled-components";
 import "./Box.css";
+import validateConnection from "../ruleEngine";
 import awsIcon from "../assets/awsIcon.svg";
-import { useSelector, useDispatch } from 'react-redux';
+import { useSelector, useDispatch } from "react-redux";
 import { Rnd } from "react-rnd";
-import { addComponent, getBoundingArea } from "../redux/components/components.actions";
+import {
+  addComponent,
+  getBoundingArea
+} from "../redux/components/components.actions";
 
 const BorderStyle = styled.div`
   border: ${props =>
@@ -30,7 +34,7 @@ const Logo = styled.img`
 
 const Box = props => {
   const dispatch = useDispatch();
-  const initialState = useSelector((state) => state);
+  const initialState = useSelector(state => state);
   const locationCoordinates = initialState?.components?.componentsItems;
   const boundedArea = initialState?.components?.getBoundingArea;
 
@@ -41,27 +45,24 @@ const Box = props => {
 
   const [coordSelectedBox, setCoordSelectedBox] = useState({
     x: props.box.x,
-    y:props.box.y,
-  })
- 
-  
+    y: props.box.y
+  });
+
   useEffect(() => {
     calculateCoordinates();
-},[])
+  }, []);
 
   const calculateCoordinates = () => {
-
     const values = {
-      id:props.box.id,
+      id: props.box.id,
       x: props.box.x,
       y: props.box.y,
       width: config.width,
-      height:config.height
-    }
+      height: config.height
+    };
     dispatch(addComponent(values));
     dispatch(getBoundingArea());
-  }
-  
+  };
 
   const handleDragBox = (e, d) => {
     props.setBoxes(boxes => {
@@ -69,28 +70,40 @@ const Box = props => {
         if (box.id === props.box.id) {
           setCoordSelectedBox({
             x: d.x,
-            y:d.y,
-          })
-          calculateDragAndDropCoordinates(box.id, d.x, d.y,config.width,config.height)
-          return { ...box, x: d.x, y: d.y }
+            y: d.y
+          });
+          calculateDragAndDropCoordinates(
+            box.id,
+            d.x,
+            d.y,
+            config.width,
+            config.height
+          );
+          return { ...box, x: d.x, y: d.y };
+        } else {
+          return box;
         }
-        else {return  box }
-       } );
+      });
     });
   };
 
-  const calculateDragAndDropCoordinates = (id,x,y,offsetWidth,offsetHeight) => {
+  const calculateDragAndDropCoordinates = (
+    id,
+    x,
+    y,
+    offsetWidth,
+    offsetHeight
+  ) => {
     const values = {
-      id:id,
+      id: id,
       x: x,
       y: y,
-      width:offsetWidth,
-      height:offsetHeight,
-    }
+      width: offsetWidth,
+      height: offsetHeight
+    };
     dispatch(addComponent(values));
     dispatch(getBoundingArea());
-    
-}
+  };
 
   const handleClick = e => {
     e.stopPropagation(); //so only the click event on the box will fire on not on the conainer itself
@@ -100,6 +113,12 @@ const Box = props => {
       props.actionState === "Add Connections" &&
       props.selected.id !== props.box.id
     ) {
+      const validBoolState = validateConnection(
+        "awsComponent",
+        props.selected.id,
+        props.box.id.toLowerCase()
+      );
+      if (!validBoolState) return props.setActionState("Error");
       return props.setLines(lines => [
         ...lines,
         {
@@ -115,7 +134,7 @@ const Box = props => {
       );
     }
   };
-  
+
   let background = null;
   if (props.selected && props.selected.id === props.box.id) {
     background =
@@ -125,7 +144,7 @@ const Box = props => {
   } else if (
     (props.actionState === "Add Connections" &&
       // props.sidePos !== "right" &&
-     props.box.type === props.selected.connectionType &&
+      props.box.type === props.selected.connectionType &&
       props.lines.filter(
         line => line.root === props.selected.id && line.end === props.box.id
       ).length === 0) ||
@@ -139,22 +158,33 @@ const Box = props => {
 
   return (
     <React.Fragment>
-       <Rnd
-        size={{ width: `${config.width}px`, height: `${config.height}px`}}
+      <Rnd
+        size={{ width: `${config.width}px`, height: `${config.height}px` }}
         position={{ x: props.box.x, y: props.box.y }}
         onDragStart={() => props.position !== "static"}
         // bounds="parent"
         onDragStop={(e, d) => handleDragBox(e, d)}
         onResize={(e, direction, ref, delta, position) => {
-          calculateDragAndDropCoordinates(ref.id,coordSelectedBox.x,coordSelectedBox.y,ref.offsetWidth,ref.offsetHeight);
+          calculateDragAndDropCoordinates(
+            ref.id,
+            coordSelectedBox.x,
+            coordSelectedBox.y,
+            ref.offsetWidth,
+            ref.offsetHeight
+          );
           setConfig({
             width: ref.offsetWidth,
             height: ref.offsetHeight,
             ...position
           });
-       
         }}
-        className={`${props.box.shape} ${props.position} imageContainer ${props.box.img?'addZindex':props.box.name==="Context"?'dashedZindex':''}`}
+        className={`${props.box.shape} ${props.position} imageContainer ${
+          props.box.img
+            ? "addZindex"
+            : props.box.name === "Context"
+            ? "dashedZindex"
+            : ""
+        }`}
         id={props.box.id}
         ref={props.box.ref}
       >
@@ -168,19 +198,18 @@ const Box = props => {
         >
           {props.box.img && (
             <>
-            <img alt="src" src={props.box.img} id={props.box.id} />
-            <p> {props.box.name}</p>
+              <img alt="src" src={props.box.img} id={props.box.id} />
+              <p className="componentName">{props.box.name}</p>
             </>
           )}
           {!props.box.img && (
-          <>
-          <BorderStyle border={props.box.name} id={props.box.id} />
-          <Logo border={props.box.name} src={awsIcon}/>
-          </>
+            <>
+              <BorderStyle border={props.box.name} id={props.box.id} />
+              <Logo border={props.box.name} src={awsIcon} />
+            </>
           )}
         </div>
       </Rnd>
-    
     </React.Fragment>
   );
 };
