@@ -74,7 +74,7 @@ const images = [
       "https://upload.wikimedia.org/wikipedia/commons/thumb/8/8f/Orange_lambda.svg/980px-Orange_lambda.svg.png"
   },
   {
-    id: "6",
+    id: "7",
     name: "RDS",
     type: "wideBox",
     friendlyName: "RDS",
@@ -82,11 +82,12 @@ const images = [
       "https://d1.awsstatic.com/icons/jp/rds_icon_concole.fe14dd124ff0ce7cd8f55f63e0112170c35885f1.png"
   },
   {
-    id: "7",
-    name: "ELB",
+    id: "8",
+    name: "REST",
     type: "wideBox",
-    friendlyName: "Elastic Load Balancer",
-    img: "https://cdn.buttercms.com/BDcRbaQTAOB5CoeCTJFv"
+    friendlyName: "API Gateway",
+    img:
+      "https://www.mbejda.com/content/images/2017/11/6a00d8341c534853ef01b7c7da8b25970b-800wi.png"
   }
 ];
 
@@ -164,7 +165,15 @@ const PlayGround = () => {
     let models = [];
     setShowDownloadButton(false);
 
-    lines.map((item, index) => {
+    const uniqueLines = Array.from(new Set(lines.map(a => a.props.start))).map(
+      id => {
+        return lines.find(a => a.props.start === id);
+      }
+    );
+
+    console.log(uniqueLines);
+
+    uniqueLines.map((item, index) => {
       let startKey = item.props.start;
       let startObj = {
         uniqueName: boxes.find(item => item.id === startKey).name,
@@ -215,7 +224,7 @@ const PlayGround = () => {
         boundedArea[item].map(data => {
           if (uniqueLists.indexOf(data) === -1) {
             uniqueLists.push(data);
-            componentSets.push(data.split('_')[0]);
+            componentSets.push(data.split("_")[0]);
             if (
               data.split("_")[0] !== "Context" &&
               data.split("_")[0] !== "AWS"
@@ -251,6 +260,8 @@ const PlayGround = () => {
     }
 
     if (newModel && newModel.length) setShowDownloadButton(true);
+    newModel = newModel.filter(item => item !== undefined);
+    console.log(newModel);
     let yamlValue = YAML.stringify({ model: newModel });
     setYmlVal(yamlValue);
   };

@@ -2,6 +2,8 @@ const awsValidation = (startPoint, endPoint) => {
   const start = startPoint.split("_")[0];
   const end = endPoint.split("_")[0];
   switch (start) {
+    case "REST":
+      if (end === "context") return true;
     case "S3":
       if (end === "users") return false;
       if (end === "cloudfront") return false;
@@ -19,6 +21,7 @@ const awsValidation = (startPoint, endPoint) => {
       if (end === "aws") return true;
       if (end === "context") return true;
       if (end === "rds") return true;
+      if (end === "rest") return true;
       return false;
     case "Cloudfront":
       if (end === "users") return false;
@@ -30,6 +33,7 @@ const awsValidation = (startPoint, endPoint) => {
       return false;
     case "Context":
       if (end === "context") return true;
+      if (end === "dynamodb") return true;
       return false;
     case "Lambda":
       if (end === "users") return false;
@@ -55,11 +59,11 @@ const awsValidation = (startPoint, endPoint) => {
       if (end === "dynamodb") return true;
       if (end === "rds") return true;
       return false;
-      case "RDS": 
-     if (end === "users") return false;
-     if (end === "cloudfront") return true;
-     if (end === "ec2") return false;
-     if (end === "s3") return true;
+    case "RDS":
+      if (end === "users") return false;
+      if (end === "cloudfront") return true;
+      if (end === "ec2") return false;
+      if (end === "s3") return true;
       if (end === "elb") return false;
       if (end === "dynamodb") return true;
       return false;
