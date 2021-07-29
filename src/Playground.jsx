@@ -254,8 +254,18 @@ const PlayGround = () => {
     let yamlValue = YAML.stringify({ model: newModel });
     setYmlVal(yamlValue);
   };
-
+  
   const downloadYml = () => {
+    //  image download
+    document.getElementsByClassName("topBarStyle")[0].style.display = "none";
+    htmlToImage.toPng(ref.current).then(function(dataUrl) {
+      let a = document.createElement("a");
+      a.href = dataUrl;
+      a.download = "image.png";
+      a.click();
+      document.getElementsByClassName("topBarStyle")[0].style.display = "block";
+    });
+   
     // file download
     let yamlContent = "data:text/yaml;charset=utf-8," + ymlVal;
     var encodedUri = encodeURI(yamlContent);
@@ -265,13 +275,7 @@ const PlayGround = () => {
     document.body.appendChild(link);
     link.click(); // This will download the data file named "data.yaml".
 
-    //  image download
-    htmlToImage.toPng(ref.current).then(function(dataUrl) {
-      let a = document.createElement("a");
-      a.href = dataUrl;
-      a.download = "image.png";
-      a.click();
-    });
+    
   };
 
   const props = {

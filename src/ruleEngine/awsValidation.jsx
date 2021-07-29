@@ -19,6 +19,7 @@ const awsValidation = (startPoint, endPoint) => {
       if (end === "aws") return true;
       if (end === "context") return true;
       if (end === "rds") return true;
+      if (end === "ec2") return true;
       return false;
     case "Cloudfront":
       if (end === "users") return false;
